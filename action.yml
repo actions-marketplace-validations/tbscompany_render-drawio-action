@@ -21,6 +21,10 @@ inputs:
     description: 'Specify the log level, recognized levels are `info` and `debug`'
     required: false
     default: "info"
+  root-dir:
+    description: 'Specify the root directory to use when searching for `.drawio` files'
+    required: false
+    default: '/files'
 outputs:
   rendered-files:
     description: 'A space-separated list of files that were rendered, can be passed to e.g. `git add`'
@@ -28,8 +32,9 @@ runs:
   using: 'docker'
   image: 'Dockerfile'
   args:
-    - --sub-dirs=${{ inputs.sub-dirs }}
-    - --skip-dirs=${{ inputs.skip-dirs }}
-    - --files=${{ inputs.files }}
-    - --formats=${{ inputs.formats }}
-    - --log-level=${{ inputs.log-level }}
+    - -sub-dirs=${{ inputs.sub-dirs }}
+    - -skip-dirs=${{ inputs.skip-dirs }}
+    - -files=${{ inputs.files }}
+    - -formats=${{ inputs.formats }}
+    - -log-level=${{ inputs.log-level }}
+    - -root-dir=${{ inputs.root-dir }}
