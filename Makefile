@@ -1,5 +1,5 @@
 REGISTRY ?= ghcr.io
-OWNER ?= racklet
+OWNER ?= tbscompany
 IMAGE_NAME ?= render-drawio-action
 IMAGE := $(REGISTRY)/$(OWNER)/$(IMAGE_NAME)
 TAG ?=
