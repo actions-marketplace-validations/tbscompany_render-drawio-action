@@ -20,18 +20,25 @@ func main() {
 }
 
 func run() error {
+	rootDir := *flag.String("root-dir", "/files", "root directory")
+	subDirs := *flag.String("sub-dirs", ".", "sub directory(ies)")
+	skipDirs := *flag.String("skip-dirs", ".git", "skip directory(ies)")
+	srcFormats := *flag.String("src-formats", "drawio", "source formats")
+	validSrcFormats := *flag.String("valid-source-formats", "drawio,*", "valid source formats")
+	destFormats := *flag.String("formats", "svg", "destination formats")
+	flag.Parse()
 
 	// Setup default config
 	cfg := &render.Config{
-		RootDir:  *flag.String("root-dir", "/files", "root directory"),
-		SubDirs:  strings.Split(*flag.String("sub-dirs", ".", "sub directory(ies)"), ","),
-		SkipDirs: strings.Split(*flag.String("skip-dirs", ".git", "skip directory(ies)"), ","),
+		RootDir:  rootDir,
+		SubDirs:  strings.Split(subDirs, ","),
+		SkipDirs: strings.Split(skipDirs, ","),
 
 		Files: map[string]string{},
 
-		SrcFormats:       strings.Split(*flag.String("src-formats", "drawio", "source formats"), ","),
-		ValidSrcFormats:  strings.Split(*flag.String("valid-source-formats", "drawio,*", "valid source formats"), ","), // "*" means that Files' src-file can have any extension
-		DestFormats:      strings.Split(*flag.String("formats", "svg", "destination formats"), ","),
+		SrcFormats:       strings.Split(srcFormats, ","),
+		ValidSrcFormats:  strings.Split(validSrcFormats, ","), // "*" means that Files' src-file can have any extension
+		DestFormats:      strings.Split(destFormats, ","),
 		ValidDestFormats: []string{"pdf", "png", "jpg", "svg"},
 	}
 
