@@ -1,4 +1,4 @@
-module github.com/racklet/render-drawio-action
+module github.com/tbscompany/render-drawio-action
 
 go 1.16
 
