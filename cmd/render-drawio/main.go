@@ -2,10 +2,8 @@ package main
 
 import (
 	"context"
-	"flag"
 	"fmt"
 	"os"
-	"strings"
 	"time"
 
 	"github.com/tbscompany/render-drawio-action/pkg/render"
@@ -20,25 +18,18 @@ func main() {
 }
 
 func run() error {
-	rootDir := *flag.String("root-dir", "/files", "root directory")
-	subDirs := *flag.String("sub-dirs", ".", "sub directory(ies)")
-	skipDirs := *flag.String("skip-dirs", ".git", "skip directory(ies)")
-	srcFormats := *flag.String("src-formats", "drawio", "source formats")
-	validSrcFormats := *flag.String("valid-source-formats", "drawio,*", "valid source formats")
-	destFormats := *flag.String("formats", "svg", "destination formats")
-	flag.Parse()
 
 	// Setup default config
 	cfg := &render.Config{
-		RootDir:  rootDir,
-		SubDirs:  strings.Split(subDirs, ","),
-		SkipDirs: strings.Split(skipDirs, ","),
+		RootDir:  "/files",
+		SubDirs:  []string{"."},
+		SkipDirs: []string{".git"},
 
 		Files: map[string]string{},
 
-		SrcFormats:       strings.Split(srcFormats, ","),
-		ValidSrcFormats:  strings.Split(validSrcFormats, ","), // "*" means that Files' src-file can have any extension
-		DestFormats:      strings.Split(destFormats, ","),
+		SrcFormats:       []string{"drawio"},
+		ValidSrcFormats:  []string{"drawio", "*"}, // "*" means that Files' src-file can have any extension
+		DestFormats:      []string{"svg"},
 		ValidDestFormats: []string{"pdf", "png", "jpg", "svg"},
 	}
 
@@ -51,6 +42,8 @@ func run() error {
 	if err := cfg.Complete(render.DefaultFlags); err != nil {
 		return err
 	}
+
+	fmt.Println(cfg)
 
 	log := zap.S()
 
