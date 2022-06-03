@@ -2,11 +2,13 @@ package main
 
 import (
 	"context"
+	"flag"
 	"fmt"
 	"os"
+	"strings"
 	"time"
 
-	"github.com/racklet/render-drawio-action/pkg/render"
+	"github.com/tbscompany/render-drawio-action/pkg/render"
 	"go.uber.org/zap"
 )
 
@@ -18,17 +20,18 @@ func main() {
 }
 
 func run() error {
+
 	// Setup default config
 	cfg := &render.Config{
-		RootDir:  "/files",
-		SubDirs:  []string{"."},
-		SkipDirs: []string{".git"},
+		RootDir:  *flag.String("root-dir", "/files", "root directory"),
+		SubDirs:  strings.Split(*flag.String("sub-dirs", ".", "sub directory(ies)"), ","),
+		SkipDirs: strings.Split(*flag.String("skip-dirs", ".git", "skip directory(ies)"), ","),
 
 		Files: map[string]string{},
 
-		SrcFormats:       []string{"drawio"},
-		ValidSrcFormats:  []string{"drawio", "*"}, // "*" means that Files' src-file can have any extension
-		DestFormats:      []string{"svg"},
+		SrcFormats:       strings.Split(*flag.String("src-formats", "drawio", "source formats"), ","),
+		ValidSrcFormats:  strings.Split(*flag.String("valid-source-formats", "drawio,*", "valid source formats"), ","), // "*" means that Files' src-file can have any extension
+		DestFormats:      strings.Split(*flag.String("formats", "svg", "destination formats"), ","),
 		ValidDestFormats: []string{"pdf", "png", "jpg", "svg"},
 	}
 
